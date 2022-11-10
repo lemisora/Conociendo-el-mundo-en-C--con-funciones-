@@ -13,6 +13,7 @@ void pideNombres(struct registroNom *a)
 {
     printf("Ingrese su nombre el primer jugador:\n");
     scanf("%s",a[0].nombre);
+    printf("Hola,esto es una prueba\n");
     printf("Ingrese su nombre el segundo jugador:\n");
     scanf("%s",a[1].nombre);
 }
