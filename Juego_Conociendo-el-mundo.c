@@ -12,7 +12,6 @@ struct registroNom/*Registro que sirve para almacenar el nombre de cada usuario*
 int aleatorio(int desde, int hasta)/*Función que otorga un número aleatorio dándole dos números que son el rango que abarca*/
 {
     int a;
-    srand(time(NULL));
     a=rand()%hasta+desde;
     return a;
 }
@@ -30,11 +29,11 @@ void muestraPregunta(int opcion, char *country)/*Muestra la pregunta de forma al
     switch (opcion)
     {
         case 1:
-            printf("¿Cuál es la ciudad de -%s-?\n",country);break;
+            printf("\n¿Cuál es la ciudad de -%s-?\n",country);break;
         case 2:
-            printf("¿Cuál es la capital de -%s-?\n",country);break;
+            printf("\n¿Cuál es la capital de -%s-?\n",country);break;
         case 3:
-            printf("¿Cuál es el idioma de -%s-?\n",country);break;
+            printf("\n¿Cuál es el idioma de -%s-?\n",country);break;
     }
 }
 
@@ -51,10 +50,11 @@ void cambiaPuntos(int ch,int puntos)/*Función que lleva el control de puntos de
     }
 }
 
-int main()
+int main(void)
 {
     int i,turno=0,n=2,num=0,quest,
     pj1=0,pj2=0;
+    srand(time(NULL));
     printf("Ingrese el número de países con los que quiere jugar:\n");
     scanf("%d",&num);
     char paises[][max]={"Irán","China","India","México","México","Francia","Irán","Francia","Tanzania"},
@@ -75,7 +75,7 @@ int main()
         strcpy(tabla[2][i],idiomas[i]);
     }
 
-    turno=aleatorio(2,1);
+    turno=aleatorio(1,2);
     if(turno==1)
         printf("\nEmpieza el jugador %s\n",nom[turno-1].nombre);
     else
@@ -86,8 +86,9 @@ int main()
     {
         if(turno==1)
         {
-            quest=aleatorio(3,1);
+            quest=aleatorio(1,3);
             muestraPregunta(quest,paises[i]);
+            
             i=i+1;
         }
         else if(turno==2)
