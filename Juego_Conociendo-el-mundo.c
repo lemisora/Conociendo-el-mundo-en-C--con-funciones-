@@ -25,20 +25,43 @@ void pideNombres(struct registroNom *a)/*Función que solicita los nombres*/
     scanf("%s",a[1].nombre);
 }
 
-void muestraPregunta()
+void muestraPregunta(int opcion, char *country)/*Muestra la pregunta de forma aleatoria de acuerdo a un número generado en main con aleatorio*/
 {
+    switch (opcion)
+    {
+        case 1:
+            printf("¿Cuál es la ciudad de -%s-?\n",country);break;
+        case 2:
+            printf("¿Cuál es la capital de -%s-?\n",country);break;
+        case 3:
+            printf("¿Cuál es el idioma de -%s-?\n",country);break;
+    }
+}
 
+void cambiaPuntos(int ch,int puntos)/*Función que lleva el control de puntos de los jugadores según ciertas circunstancias*/
+{
+    switch (ch)
+    {
+        case 0:
+            puntos=puntos+10;
+            printf("¡Felicidades has ganado 10 puntos");break;
+        case 1:
+            puntos=puntos-4;
+            printf("¡Qué mala suerte no has podido adivinar así que pierdes 4 puntos!\n");break;
+    }
 }
 
 int main()
 {
-    int i,turno=0,n=2,num=0;
+    int i,turno=0,n=2,num=0,quest,
+    pj1=0,pj2=0;
     printf("Ingrese el número de países con los que quiere jugar:\n");
     scanf("%d",&num);
     char paises[][max]={"Irán","China","India","México","México","Francia","Irán","Francia","Tanzania"},
         ciudades[][max]={"Ardebil","Cantón","Chennai","Tasquillo","Puebla","Niza","Hamadán","Normandía","Iringa"},
         capitales[][max]={"Teherán","Pekín","Nueva Dehli","Ciudad de México","Ciudad de México","París","Teherán","París","Dodoma"},
-        idiomas[][max]={"Persa","Cantonés","Tamilés","Otomí","Español","Francés","Persa","Normando","Bantú"};
+        idiomas[][max]={"Persa","Cantonés","Tamilés","Otomí","Español","Francés","Persa","Normando","Bantú"},
+        resp[max], *r=resp;
 
     char tabla[3][num][max];
 
@@ -53,10 +76,41 @@ int main()
     }
 
     turno=aleatorio(2,1);
-    if (turno==1)
-        printf("Empieza el jugador %s\n",nom[0].nombre);
+    if(turno==1)
+        printf("\nEmpieza el jugador %s\n",nom[turno-1].nombre);
     else
-        printf("Empieza el jugador %s\n",nom[1].nombre);
+        printf("\nEmpieza el jugador %s\n",nom[turno-1].nombre);
     
+    i=0;
+    while (i!=num)
+    {
+        if(turno==1)
+        {
+            quest=aleatorio(3,1);
+            muestraPregunta(quest,paises[i]);
+            i=i+1;
+        }
+        else if(turno==2)
+        {
+            quest=aleatorio(3,1);
+            muestraPregunta(quest,paises[i]);
+            i=i+1;
+        }
+        if (pj1>=70||pj2>=70)/*Si se llega a los 70 puntos acumulados se finaliza la ejecución del juego*/
+        {
+            printf("Un jugador ha llegado al máximo número de puntos en este juego, así que termina el juego\n");
+            i=num;
+        }
+    }
+
+    if (pj1<=0&&pj2<=0)/*Se muestra quien es el que ha ganado al final del juego y los puntos que acumuló cada jugador*/
+        printf("\n¿Cómo es posible?\t¡Ha ganado la ignorancia!\n");
+    else if (pj1>pj2)
+        printf("\nHa ganado el jugador %s\n",nom[0].nombre);
+    else if (pj2>pj1)
+        printf("\nHa ganado el jugador %s\n",nom[1].nombre);
+    else if (pj1==pj2)
+        printf("¡Vaya suerte!\n¡Han quedado empatados!\n");
+    printf("\nTotal de puntos:\nJugador 1: %d\tJugador 2: %d\n",pj1,pj2);
     return 0;
 }
