@@ -118,7 +118,6 @@ int main(void)
                     i=i+1;
                 }
             }
-
         }
         if (pj1>=70||pj2>=70)/*Si se llega a los 70 puntos acumulados se finaliza la ejecución del juego*/{
             printf("Un jugador ha llegado al máximo número de puntos en este juego, así que termina el juego\n");
