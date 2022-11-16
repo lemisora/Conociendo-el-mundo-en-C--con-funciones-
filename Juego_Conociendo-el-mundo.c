@@ -6,7 +6,7 @@
 struct registroNom/*Registro que sirve para almacenar el nombre de cada usuario*/{
     char nombre[max];
 };
-int aleatorio(int desde, int hasta)/*Función que otorga un número aleatorio dándole dos números que son el rango que abarca*/
+int aleatorio(int desde,int hasta)/*Función que otorga un número aleatorio dándole dos números que son el rango que abarca*/
 {
     int a;
     a=rand()%hasta+desde;
@@ -15,9 +15,11 @@ int aleatorio(int desde, int hasta)/*Función que otorga un número aleatorio d�
 void pideNombres(struct registroNom *a)/*Función que solicita los nombres*/
 {
     printf("\nPrimer jugador ingrese su nombre: ");
-    scanf("%s",a[0].nombre);
+    fgets(a[0].nombre,max,stdin);
+    fflush(stdin);
     printf("Segundo jugador ingrese su nombre: ");
-    scanf("%s",a[1].nombre);
+    fgets(a[1].nombre,max,stdin);
+    fflush(stdin);
 }
 void muestraPregunta(int opcion, char *country)/*Muestra la pregunta de forma aleatoria de acuerdo a un número generado en main con aleatorio*/
 {
@@ -31,25 +33,40 @@ void muestraPregunta(int opcion, char *country)/*Muestra la pregunta de forma al
 }
 void posResp(int preg,int n,char lista[][n][max])/*Muestra las posibles respuestas*/
 {
-    int aleat=aleatorio(1,2),f,j;
+    int aleat,f,j;
+    aleat=aleatorio(1,2);
     if (aleat==1)
         for (f=n-1;f>=0;f--)
             printf("\t\t%s\n",lista[preg-1][f]);
     else{
-        f=0;
-        j=n-1;
-        while (f<n && j>0){
-            if(f!=j){
-                printf("\t\t%s\n",lista[preg-1][f]);
-                printf("\t\t%s\n",lista[preg-1][j]);
+        if(n%2!=0){
+            f=0;
+            j=n-1;
+            while (f<n && j>0){
+                if(f!=j){
+                    printf("\t\t%s\n",lista[preg-1][f]);
+                    printf("\t\t%s\n",lista[preg-1][j]);
+                }
+                else{ 
+                    printf("\t\t%s\n",lista[preg-1][f]);
+                    f=n;
+                    j=0;
+                }
+                f=f+1;
+                j=j-1;
             }
-            else{
-                printf("\t\t%s\n",lista[preg-1][f]);
-                f=n;
-                j=0;
+        }
+        else{
+            j=n-1;
+            for (f=0;f<n/2;f++){
+                if(f!=j){
+                    printf("\t\t%s\n",lista[preg-1][f]);
+                    printf("\t\t%s\n",lista[preg-1][j]);
+                    j=j-1;
+                }
+                else
+                    f=n;
             }
-            f=f+1;
-            j=j-1;
         }
     }
 }
@@ -72,17 +89,18 @@ int main(void)
     int i,turno,n=1,num=0,quest,
     pj1=0,pj2=0;
     srand(time(NULL));/*Se inicia la semilla para el rand*/
-    printf("Ingrese el número de países con los que quiere jugar (Máximo número permitido {9} ): ");
-    scanf("%d",&num);
+    
     char paises[][max]={"Irán","China","India","México","México","Francia","Irán","Francia","Tanzania"},
         ciudades[][max]={"Ardebil","Cantón","Chennai","Tasquillo","Puebla","Niza","Hamadán","Normandía","Iringa"},
-        capitales[][max]={"Teherán","Pekín","Nueva Dehli","Ciudad de México","Ciudad de México","París","Teherán","París","Dodoma"},
+        capitales[][max]={"Teherán","Pekín","Nueva_Dehli","Ciudad_de_México","Ciudad_de_México","París","Teherán","París","Dodoma"},
         idiomas[][max]={"Persa","Cantonés","Tamilés","Otomí","Español","Francés","Persa","Normando","Bantú"},
         resp[max], *r=resp, marcar[]={"+"},*m=marcar;
-    char tabla[3][num][max];
     struct registroNom *nom;
     nom=(struct registroNom*)malloc(n*sizeof(struct registroNom));/*Se solicita espacio en memoria al compilador y al OS para los registros de nombres*/
     pideNombres(nom);
+    printf("\nIngrese el número de países con los que quieren jugar (Máximo número permitido {9} ): ");
+    scanf("%d",&num);
+    char tabla[3][num][max];
     for (i=0;i<num;i++){
         strcpy(tabla[0][i],ciudades[i]);
         strcpy(tabla[1][i],capitales[i]);
@@ -90,10 +108,14 @@ int main(void)
     }
     turno=aleatorio(1,2);
     if(turno==1) {
-        printf("\nEmpieza el jugador -%s-\n", nom[turno-1].nombre);
+        printf("\nEmpieza el jugador ");
+        fputs(nom[turno-1].nombre,stdout);
+        printf("\n");
     }
     else{
-        printf("\nEmpieza el jugador -%s-\n", nom[turno-1].nombre);
+        printf("\nEmpieza el jugador ");
+        fputs(nom[turno-1].nombre,stdout);
+        printf("\n");
     }
     i=0;
     while (i!=num){
