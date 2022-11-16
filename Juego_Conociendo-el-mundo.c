@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#define max 50
+#define max 50/*Se define una constante que indica el máximo de carácteres para las cadenas*/
 struct registroNom{ /*Registro que sirve para almacenar el nombre de cada usuario*/
     char nombre[max];
 };
@@ -88,13 +88,13 @@ int main(void){
     pideNombres(nom);
     printf("\nIngrese el número de países con los que quieren jugar (Máximo número permitido {9} ): ");
     scanf("%d", &num);
-    char tabla[3][num][max];
+    char tabla[3][num][max];/*Se declara una matriz cuyo tamaño varía dependiendo de lo que indique el usuario*/
     for (i = 0; i < num; i++){
         strcpy(tabla[0][i], ciudades[i]);
         strcpy(tabla[1][i], capitales[i]);
         strcpy(tabla[2][i], idiomas[i]);
     }
-    turno = aleatorio(1, 2);
+    turno = aleatorio(1, 2);/*Se muestra quien tiene el turno, esto se elige de manera aleatoria*/
     if (turno == 1){
         printf("\nEmpieza el jugador ");
         fputs(nom[turno - 1].nombre, stdout);
@@ -106,24 +106,24 @@ int main(void){
         printf("\n");
     }
     i = 0;
-    while (i != num){
+    while (i != num){ /*Se empieza el juego, este no termina sino hasta que se haya llegado al número de países que indicó el usuario, o hasta que un jugador acumule 70 puntos o más*/
         if (turno == 1){
-            quest = aleatorio(1, 3);
-            muestraPregunta(quest, paises[i]);
-            posResp(quest, num, tabla);
-            printf("\nIngrese su respuesta: ");
+            quest = aleatorio(1, 3);/*Aquí se elige que pregunta se le hace al usuario*/
+            muestraPregunta(quest, paises[i]);/*Se le muestra la pregunta de acuerdo al número generado en la instrucción anterior*/
+            posResp(quest, num, tabla);/*Se muestran las posibles respuestas de acuerdo a la pregunta que se ha hecho*/
+            printf("\nIngrese su respuesta: ");/*Se solicita la respuesta y se almacena en el apuntador -r-*/
             scanf("%s", r);
             if (strcmp(tabla[quest - 1][i], r) == 0){
-                cambiaPuntos(0, &pj1);
-                strcat(tabla[quest - 1][i], m); /*Se marca la respuesta una vez adivinada*/
-                muestraResp(i, num, paises[i], tabla);
-                turno = turno + 1;
-                printf("\nAhora es el turno del jugador %s\n", nom[turno - 1].nombre);
-                i = i + 1;
+                cambiaPuntos(0, &pj1); /*Si lo ingresado coincide con la respuesta se le añaden puntos, eso es lo que indica la orden 0 en la función cambiaPuntos*/
+                strcat(tabla[quest - 1][i], m); /*Se marca la respuesta una vez adivinada mediante una concatenación*/
+                muestraResp(i, num, paises[i], tabla); /*Se muestran los datos correspondientes del país en turno */
+                turno = turno + 1; /*Se asigna el turno al otro jugador*/
+                printf("\nAhora es el turno del jugador %s\n", nom[turno - 1].nombre); /*Se indica quien posee el turno*/
+                i = i + 1; /*Se avanza al otro país sumando uno al contador*/
             }
             else{
-                cambiaPuntos(1, &pj1);
-                printf("\nAhora el jugador %s debe adivinar\n\nIngrese su respuesta: ", nom[turno].nombre);
+                cambiaPuntos(1, &pj1); /*En caso de no haber adivinado se le restan puntos, eso es lo que indica la orden 1 en la función cambiaPuntos*/
+                printf("\nAhora el jugador %s debe adivinar\n\nIngrese su respuesta: ", nom[turno].nombre);/*Se le da la oportunidad al otro jugador y se repite el mismo proceso*/
                 scanf("%s", r);
                 if (strcmp(tabla[quest - 1][i], r) == 0){
                     cambiaPuntos(0, &pj2);
@@ -132,16 +132,16 @@ int main(void){
                     printf("\nAhora es el turno del jugador %s\n", nom[turno - 1].nombre);
                     i = i + 1;
                 }
-                else{
+                else{ /*Si nadie logra adivinar entonces se les indica y se muestran los datos correspondientes del país en turno*/
                     cambiaPuntos(1, &pj2);
                     printf("Ninguno pudo adivinar\n");
                     muestraResp(i, num, paises[i], tabla);
-                    printf("\nAhora es el turno del jugador %s\n", nom[turno - 1].nombre);
+                    printf("\nAhora es el turno del jugador %s\n", nom[turno - 1].nombre);/*Se le da el turno al otro jugador y se avanza al siguiente país*/
                     i = i + 1;
                 }
             }
         }
-        else if (turno == 2){
+        else if (turno == 2){ /*Ocurre prácticamente lo mismo que en caso de que el turno hubiese sido 1*/
             quest = aleatorio(1, 3);
             muestraPregunta(quest, paises[i]);
             posResp(quest, num, tabla);
